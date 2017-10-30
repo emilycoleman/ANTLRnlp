@@ -1,11 +1,17 @@
 //import com.grammar.EnglishLexer;
 //import com.grammar.EnglishParser;
+import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.*;
-//import generated.com.grammar.EnglishParser;
-//import generated.grammar.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
-
+import java.awt.*;
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.*;
+
+
 
 public class Main
 {
@@ -16,16 +22,21 @@ public class Main
         PoSTagger tagSentence = new PoSTagger(sentence);
         String taggedSentence = tagSentence.getTaggedSentence();
 
-//        ANTLRInputStream inputStream = new ANTLRInputStream(taggedSentence);
-//        EnglishLexer lexer = new EnglishLexer(inputStream);
-//        CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-//        EnglishParser parser = new EnglishParser(commonTokenStream);
+        ANTLRInputStream inputStream = new ANTLRInputStream(taggedSentence);
+        EnglishLexer lexer = new EnglishLexer(inputStream);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+        EnglishParser parser = new EnglishParser(commonTokenStream);
+        List<String> rules = Arrays.asList(parser.getRuleNames());
+        parser.getBuildParseTree();
+        ParseTree tree = parser.getContext();
+        TreeViewer treeViewer = new TreeViewer(rules, tree);
 
-//        ANTLRStringStream in = new ANTLRStringStream("12*(5-6)");
-//        ExpLexer lexer = new ExpLexer(in);
-//        CommonTokenStream tokens = new CommonTokenStream(lexer);
-//        ExpParser parser = new ExpParser(tokens);
-//        parser.eval();
-
+        JFrame frame = new JFrame();
+        frame.setContentPane( new JScrollPane( treeViewer ) );
+        frame.setPreferredSize( new Dimension(600, 800));
+        frame.pack();
+        frame.setLocationRelativeTo( null );
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        frame.setVisible( true );
     }
 }

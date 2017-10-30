@@ -29,12 +29,13 @@ generateGrammarSource {
     //arguments += ['-package', '-gui', 'com.parser.grammar.english']
     maxHeapSize = "64m"
     arguments += ["-visitor", "-long-messages"]
-    outputDirectory = new File("generated-src/generated".toString())
+    //outputDirectory = new File("generated-src/generated".toString())
+    outputDirectory = new File("src/main/generated".toString())
 }
 
 sourceSets {
     generated {
-        java.srcDir 'generated-src/generated'
+        java.srcDir 'src/main/generated'
     }
 }
 
@@ -53,5 +54,5 @@ allprojects {
 }
 
 clean{
-    delete "generated-src/generated"
+    delete "src/main/generated"
 }
