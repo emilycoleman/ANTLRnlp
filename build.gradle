@@ -1,0 +1,57 @@
+//group 'com.parser'
+//version '1.0-SNAPSHOT'
+//
+//apply plugin: 'java'
+//
+//sourceCompatibility = 1.8
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+//}
+
+group 'com.parser'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'antlr'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+generateGrammarSource {
+    //arguments += ['-package', '-gui', 'com.parser.grammar.english']
+    maxHeapSize = "64m"
+    arguments += ["-visitor", "-long-messages"]
+    outputDirectory = new File("generated-src/generated".toString())
+}
+
+sourceSets {
+    generated {
+        java.srcDir 'generated-src/generated'
+    }
+}
+
+compileJava.source sourceSets.generated.java, sourceSets.main.java
+
+compileJava.dependsOn generateGrammarSource
+
+allprojects {
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        antlr "org.antlr:antlr4:4.7"
+        compile group: 'org.antlr', name: 'antlr4', version: '4.7'
+        compile 'org.antlr:antlr4-runtime:4.7'
+        compile files('src/main/resources/StanfordPoSTagger/stanford-postagger.jar')
+    }
+}
+
+clean{
+    delete "generated-src/generated"
+}
