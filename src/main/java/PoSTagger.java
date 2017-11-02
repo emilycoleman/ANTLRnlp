@@ -17,16 +17,17 @@ public class PoSTagger {
     public static String tagSentence(String in_sentence) {
         MaxentTagger tagger = new MaxentTagger("../resources/StanfordPoSTagger/models/english-left3words-distsim.tagger");
         String taggedString = tagger.tagString(in_sentence);
+        return taggedString;
 
-        String[] splitSentence = taggedString.split(" ");
-
-        ArrayList<String> pos = new ArrayList<>();
-        for(String word : splitSentence) {
-            String[] partOfSpeech = word.split("_");
-            pos.add(partOfSpeech[1]);
-        }
-
-        return String.join(" ", pos);
+//        String[] splitSentence = taggedString.split(" ");
+//
+//        ArrayList<String> pos = new ArrayList<>();
+//        for(String word : splitSentence) {
+//            String[] partOfSpeech = word.split("_");
+//            pos.add(partOfSpeech[1]);
+//        }
+//
+//        return String.join(" ", pos);
     }
 
     public String getTaggedSentence() {

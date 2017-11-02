@@ -16,8 +16,9 @@ import javax.swing.*;
 public class Main
 {
     public static void main( String[] args ) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String sentence = reader.readLine();
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//        String sentence = reader.readLine();
+        String sentence = "Cars are fast.";
 
         PoSTagger tagSentence = new PoSTagger(sentence);
         String taggedSentence = tagSentence.getTaggedSentence();
@@ -29,7 +30,14 @@ public class Main
         List<String> rules = Arrays.asList(parser.getRuleNames());
         parser.getBuildParseTree();
         ParseTree tree = parser.getContext();
+
         TreeViewer treeViewer = new TreeViewer(rules, tree);
+
+//        CharStream stream = new ANTLRInputStream("hello antlr");
+//        HelloLexer lexer  = new HelloLexer(stream);
+//        TokenStream tokenStream = new CommonTokenStream(lexer);
+//        HelloParser parser = new HelloParser(tokenStream);
+//        ParseTree tree = parser.r();
 
         JFrame frame = new JFrame();
         frame.setContentPane( new JScrollPane( treeViewer ) );
