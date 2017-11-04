@@ -2,6 +2,8 @@
 .gradle/
 build/
 
+out/
+
 # Netbeans
 nbactions.xml
 .nb-*
@@ -15,6 +17,9 @@ screenshot*.png
 
 # logs
 *.log
+
+# Compiled class file
+*.class
 
 # JavaScript
 node_modules/
