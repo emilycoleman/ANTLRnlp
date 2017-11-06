@@ -17,6 +17,16 @@ public interface EnglishListener extends ParseTreeListener {
 	 */
 	void exitSentence(EnglishParser.SentenceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EnglishParser#clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterClause(EnglishParser.ClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitClause(EnglishParser.ClauseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EnglishParser#noun_phrase}.
 	 * @param ctx the parse tree
 	 */

@@ -27,6 +27,18 @@ public class EnglishBaseListener implements EnglishListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterClause(EnglishParser.ClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClause(EnglishParser.ClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNoun_phrase(EnglishParser.Noun_phraseContext ctx) { }
 	/**
 	 * {@inheritDoc}

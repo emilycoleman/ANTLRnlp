@@ -18,10 +18,11 @@ public class EnglishParser extends Parser {
 	public static final int
 		WHITESPACE=1, NOUN=2, VERB=3, DETERMINER=4, ADJ=5, ADV=6, CONJ=7, PERIOD=8;
 	public static final int
-		RULE_sentence = 0, RULE_noun_phrase = 1, RULE_adjective_phrase = 2, RULE_adverbial_phrase = 3, 
-		RULE_verb_phrase = 4;
+		RULE_sentence = 0, RULE_clause = 1, RULE_noun_phrase = 2, RULE_adjective_phrase = 3, 
+		RULE_adverbial_phrase = 4, RULE_verb_phrase = 5;
 	public static final String[] ruleNames = {
-		"sentence", "noun_phrase", "adjective_phrase", "adverbial_phrase", "verb_phrase"
+		"sentence", "clause", "noun_phrase", "adjective_phrase", "adverbial_phrase", 
+		"verb_phrase"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -81,13 +82,14 @@ public class EnglishParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class SentenceContext extends ParserRuleContext {
-		public Noun_phraseContext noun_phrase() {
-			return getRuleContext(Noun_phraseContext.class,0);
+		public List<ClauseContext> clause() {
+			return getRuleContexts(ClauseContext.class);
 		}
-		public Verb_phraseContext verb_phrase() {
-			return getRuleContext(Verb_phraseContext.class,0);
+		public ClauseContext clause(int i) {
+			return getRuleContext(ClauseContext.class,i);
 		}
 		public TerminalNode PERIOD() { return getToken(EnglishParser.PERIOD, 0); }
+		public TerminalNode CONJ() { return getToken(EnglishParser.CONJ, 0); }
 		public SentenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -111,14 +113,80 @@ public class EnglishParser extends Parser {
 		SentenceContext _localctx = new SentenceContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_sentence);
 		try {
+			setState(20);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(12);
+				clause();
+				setState(13);
+				match(PERIOD);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(15);
+				clause();
+				setState(16);
+				match(CONJ);
+				setState(17);
+				clause();
+				setState(18);
+				match(PERIOD);
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ClauseContext extends ParserRuleContext {
+		public Noun_phraseContext noun_phrase() {
+			return getRuleContext(Noun_phraseContext.class,0);
+		}
+		public Verb_phraseContext verb_phrase() {
+			return getRuleContext(Verb_phraseContext.class,0);
+		}
+		public ClauseContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_clause; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EnglishListener ) ((EnglishListener)listener).enterClause(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EnglishListener ) ((EnglishListener)listener).exitClause(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof EnglishVisitor ) return ((EnglishVisitor<? extends T>)visitor).visitClause(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ClauseContext clause() throws RecognitionException {
+		ClauseContext _localctx = new ClauseContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_clause);
+		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(10);
+			setState(22);
 			noun_phrase(0);
-			setState(11);
+			setState(23);
 			verb_phrase(0);
-			setState(12);
-			match(PERIOD);
 			}
 		}
 		catch (RecognitionException re) {
@@ -172,27 +240,27 @@ public class EnglishParser extends Parser {
 		int _parentState = getState();
 		Noun_phraseContext _localctx = new Noun_phraseContext(_ctx, _parentState);
 		Noun_phraseContext _prevctx = _localctx;
-		int _startState = 2;
-		enterRecursionRule(_localctx, 2, RULE_noun_phrase, _p);
+		int _startState = 4;
+		enterRecursionRule(_localctx, 4, RULE_noun_phrase, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19);
+			setState(30);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ADJ:
 			case ADV:
 				{
-				setState(15);
+				setState(26);
 				adjective_phrase();
-				setState(16);
+				setState(27);
 				noun_phrase(5);
 				}
 				break;
 			case NOUN:
 				{
-				setState(18);
+				setState(29);
 				match(NOUN);
 				}
 				break;
@@ -200,24 +268,24 @@ public class EnglishParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(30);
+			setState(41);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(28);
+					setState(39);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 					case 1:
 						{
 						_localctx = new Noun_phraseContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_noun_phrase);
-						setState(21);
+						setState(32);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(22);
+						setState(33);
 						noun_phrase(4);
 						}
 						break;
@@ -225,11 +293,11 @@ public class EnglishParser extends Parser {
 						{
 						_localctx = new Noun_phraseContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_noun_phrase);
-						setState(23);
+						setState(34);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(24);
+						setState(35);
 						match(CONJ);
-						setState(25);
+						setState(36);
 						noun_phrase(3);
 						}
 						break;
@@ -237,18 +305,18 @@ public class EnglishParser extends Parser {
 						{
 						_localctx = new Noun_phraseContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_noun_phrase);
-						setState(26);
+						setState(37);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(27);
+						setState(38);
 						adjective_phrase();
 						}
 						break;
 					}
 					} 
 				}
-				setState(32);
+				setState(43);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			}
 			}
 		}
@@ -292,33 +360,33 @@ public class EnglishParser extends Parser {
 
 	public final Adjective_phraseContext adjective_phrase() throws RecognitionException {
 		Adjective_phraseContext _localctx = new Adjective_phraseContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_adjective_phrase);
+		enterRule(_localctx, 6, RULE_adjective_phrase);
 		try {
-			setState(39);
+			setState(50);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(33);
+				setState(44);
 				adverbial_phrase(0);
-				setState(34);
+				setState(45);
 				adjective_phrase();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(36);
+				setState(47);
 				match(ADJ);
-				setState(37);
+				setState(48);
 				adjective_phrase();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(38);
+				setState(49);
 				match(ADJ);
 				}
 				break;
@@ -371,20 +439,20 @@ public class EnglishParser extends Parser {
 		int _parentState = getState();
 		Adverbial_phraseContext _localctx = new Adverbial_phraseContext(_ctx, _parentState);
 		Adverbial_phraseContext _prevctx = _localctx;
-		int _startState = 6;
-		enterRecursionRule(_localctx, 6, RULE_adverbial_phrase, _p);
+		int _startState = 8;
+		enterRecursionRule(_localctx, 8, RULE_adverbial_phrase, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(42);
+			setState(53);
 			match(ADV);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(48);
+			setState(59);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -393,16 +461,16 @@ public class EnglishParser extends Parser {
 					{
 					_localctx = new Adverbial_phraseContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_adverbial_phrase);
-					setState(44);
+					setState(55);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(45);
+					setState(56);
 					adverbial_phrase(3);
 					}
 					} 
 				}
-				setState(50);
+				setState(61);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
 			}
 		}
@@ -453,26 +521,26 @@ public class EnglishParser extends Parser {
 		int _parentState = getState();
 		Verb_phraseContext _localctx = new Verb_phraseContext(_ctx, _parentState);
 		Verb_phraseContext _prevctx = _localctx;
-		int _startState = 8;
-		enterRecursionRule(_localctx, 8, RULE_verb_phrase, _p);
+		int _startState = 10;
+		enterRecursionRule(_localctx, 10, RULE_verb_phrase, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(67);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ADV:
 				{
-				setState(52);
+				setState(63);
 				adverbial_phrase(0);
-				setState(53);
+				setState(64);
 				verb_phrase(4);
 				}
 				break;
 			case VERB:
 				{
-				setState(55);
+				setState(66);
 				match(VERB);
 				}
 				break;
@@ -480,24 +548,24 @@ public class EnglishParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(64);
+			setState(75);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(62);
+					setState(73);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 					case 1:
 						{
 						_localctx = new Verb_phraseContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_verb_phrase);
-						setState(58);
+						setState(69);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(59);
+						setState(70);
 						adverbial_phrase(0);
 						}
 						break;
@@ -505,18 +573,18 @@ public class EnglishParser extends Parser {
 						{
 						_localctx = new Verb_phraseContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_verb_phrase);
-						setState(60);
+						setState(71);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(61);
+						setState(72);
 						match(VERB);
 						}
 						break;
 					}
 					} 
 				}
-				setState(66);
+				setState(77);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			}
 			}
 		}
@@ -533,11 +601,11 @@ public class EnglishParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 1:
+		case 2:
 			return noun_phrase_sempred((Noun_phraseContext)_localctx, predIndex);
-		case 3:
-			return adverbial_phrase_sempred((Adverbial_phraseContext)_localctx, predIndex);
 		case 4:
+			return adverbial_phrase_sempred((Adverbial_phraseContext)_localctx, predIndex);
+		case 5:
 			return verb_phrase_sempred((Verb_phraseContext)_localctx, predIndex);
 		}
 		return true;
@@ -571,25 +639,27 @@ public class EnglishParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\nF\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3\26"+
-		"\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3\37\n\3\f\3\16\3\"\13\3\3\4\3\4\3"+
-		"\4\3\4\3\4\3\4\5\4*\n\4\3\5\3\5\3\5\3\5\3\5\7\5\61\n\5\f\5\16\5\64\13"+
-		"\5\3\6\3\6\3\6\3\6\3\6\5\6;\n\6\3\6\3\6\3\6\3\6\7\6A\n\6\f\6\16\6D\13"+
-		"\6\3\6\2\5\4\b\n\7\2\4\6\b\n\2\2\2J\2\f\3\2\2\2\4\25\3\2\2\2\6)\3\2\2"+
-		"\2\b+\3\2\2\2\n:\3\2\2\2\f\r\5\4\3\2\r\16\5\n\6\2\16\17\7\n\2\2\17\3\3"+
-		"\2\2\2\20\21\b\3\1\2\21\22\5\6\4\2\22\23\5\4\3\7\23\26\3\2\2\2\24\26\7"+
-		"\4\2\2\25\20\3\2\2\2\25\24\3\2\2\2\26 \3\2\2\2\27\30\f\5\2\2\30\37\5\4"+
-		"\3\6\31\32\f\4\2\2\32\33\7\t\2\2\33\37\5\4\3\5\34\35\f\6\2\2\35\37\5\6"+
-		"\4\2\36\27\3\2\2\2\36\31\3\2\2\2\36\34\3\2\2\2\37\"\3\2\2\2 \36\3\2\2"+
-		"\2 !\3\2\2\2!\5\3\2\2\2\" \3\2\2\2#$\5\b\5\2$%\5\6\4\2%*\3\2\2\2&\'\7"+
-		"\7\2\2\'*\5\6\4\2(*\7\7\2\2)#\3\2\2\2)&\3\2\2\2)(\3\2\2\2*\7\3\2\2\2+"+
-		",\b\5\1\2,-\7\b\2\2-\62\3\2\2\2./\f\4\2\2/\61\5\b\5\5\60.\3\2\2\2\61\64"+
-		"\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\t\3\2\2\2\64\62\3\2\2\2\65\66"+
-		"\b\6\1\2\66\67\5\b\5\2\678\5\n\6\68;\3\2\2\29;\7\5\2\2:\65\3\2\2\2:9\3"+
-		"\2\2\2;B\3\2\2\2<=\f\5\2\2=A\5\b\5\2>?\f\4\2\2?A\7\5\2\2@<\3\2\2\2@>\3"+
-		"\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2C\13\3\2\2\2DB\3\2\2\2\n\25\36 )\62"+
-		":@B";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\nQ\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2"+
+		"\27\n\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\5\4!\n\4\3\4\3\4\3\4\3\4\3\4\3"+
+		"\4\3\4\7\4*\n\4\f\4\16\4-\13\4\3\5\3\5\3\5\3\5\3\5\3\5\5\5\65\n\5\3\6"+
+		"\3\6\3\6\3\6\3\6\7\6<\n\6\f\6\16\6?\13\6\3\7\3\7\3\7\3\7\3\7\5\7F\n\7"+
+		"\3\7\3\7\3\7\3\7\7\7L\n\7\f\7\16\7O\13\7\3\7\2\5\6\n\f\b\2\4\6\b\n\f\2"+
+		"\2\2U\2\26\3\2\2\2\4\30\3\2\2\2\6 \3\2\2\2\b\64\3\2\2\2\n\66\3\2\2\2\f"+
+		"E\3\2\2\2\16\17\5\4\3\2\17\20\7\n\2\2\20\27\3\2\2\2\21\22\5\4\3\2\22\23"+
+		"\7\t\2\2\23\24\5\4\3\2\24\25\7\n\2\2\25\27\3\2\2\2\26\16\3\2\2\2\26\21"+
+		"\3\2\2\2\27\3\3\2\2\2\30\31\5\6\4\2\31\32\5\f\7\2\32\5\3\2\2\2\33\34\b"+
+		"\4\1\2\34\35\5\b\5\2\35\36\5\6\4\7\36!\3\2\2\2\37!\7\4\2\2 \33\3\2\2\2"+
+		" \37\3\2\2\2!+\3\2\2\2\"#\f\5\2\2#*\5\6\4\6$%\f\4\2\2%&\7\t\2\2&*\5\6"+
+		"\4\5\'(\f\6\2\2(*\5\b\5\2)\"\3\2\2\2)$\3\2\2\2)\'\3\2\2\2*-\3\2\2\2+)"+
+		"\3\2\2\2+,\3\2\2\2,\7\3\2\2\2-+\3\2\2\2./\5\n\6\2/\60\5\b\5\2\60\65\3"+
+		"\2\2\2\61\62\7\7\2\2\62\65\5\b\5\2\63\65\7\7\2\2\64.\3\2\2\2\64\61\3\2"+
+		"\2\2\64\63\3\2\2\2\65\t\3\2\2\2\66\67\b\6\1\2\678\7\b\2\28=\3\2\2\29:"+
+		"\f\4\2\2:<\5\n\6\5;9\3\2\2\2<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>\13\3\2\2\2"+
+		"?=\3\2\2\2@A\b\7\1\2AB\5\n\6\2BC\5\f\7\6CF\3\2\2\2DF\7\5\2\2E@\3\2\2\2"+
+		"ED\3\2\2\2FM\3\2\2\2GH\f\5\2\2HL\5\n\6\2IJ\f\4\2\2JL\7\5\2\2KG\3\2\2\2"+
+		"KI\3\2\2\2LO\3\2\2\2MK\3\2\2\2MN\3\2\2\2N\r\3\2\2\2OM\3\2\2\2\13\26 )"+
+		"+\64=EKM";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
