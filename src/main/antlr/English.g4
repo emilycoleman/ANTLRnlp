@@ -6,6 +6,7 @@ grammar English;
 WHITESPACE : (' ' | '\n')+ -> channel(HIDDEN);
 
 NOUN : ([a-z] | [A-Z])+ '_' 'NN'
+| ([a-z] | [A-Z])+ '_' 'PRP'
 | ([a-z] | [A-Z])+ '_' 'NNS' //plural
 | ([a-z] | [A-Z])+ '_' 'NNP' //proper
 | ([a-z] | [A-Z])+ '_' 'NNPS'; //proper and plural
@@ -24,24 +25,6 @@ ADV : ([a-z] | [A-Z])+ '_' 'RB'
 ([a-z] | [A-Z])+ '_' 'RBS'; //superlative
 CONJ : ([a-z] | [A-Z])+ '_' 'CC'; //coordinating conjunction
 
-
-//NOUN : ([a-z] | [A-Z])+ '_' 'noun';
-//PRONOUN : ([a-z] | [A-Z])+ '_' 'pronoun';
-//VERB : ([a-z] | [A-Z])+ '_' 'verb';
-//ADJ : ([a-z] | [A-Z])+ '_' 'adjective';
-//ADV : ([a-z] | [A-Z])+ '_' 'adverb';
-//PREP : ([a-z] | [A-Z])+ '_' 'preposition';
-//CONJ : ([a-z] | [A-Z])+ '_' 'conjunction';
-//INTERJ : ([a-z] | [A-Z])+ '_' 'interjection';
-
-//ADJ : 'adjective';
-//VERB : 'verb';
-//ADV : 'adverb';
-//PREP : 'preposition';
-//CONJ : 'conjunction';
-//INTERJ : 'interjection';
-//NOUN : 'noun';
-//PRONOUN : 'pronoun';
 PERIOD : '.';
 
 sentence : noun_phrase verb_phrase PERIOD;
