@@ -33,6 +33,6 @@ public class SentenceParse {
         ParseTree tree = parser.sentence();
 
         return new TreeViewer(rules, tree);
-    };
+    }
 
 }

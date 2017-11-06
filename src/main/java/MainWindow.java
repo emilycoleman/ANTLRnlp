@@ -12,34 +12,27 @@ public class MainWindow {
 
     public MainWindow() {
         JFrame frame = new JFrame();
+        frame.setPreferredSize( new Dimension(600, 800));
         JPanel container = new JPanel();
-        JPanel topPane = new JPanel();
-        JPanel bottomPane = new JPanel();
-        bottomPane.setSize(new Dimension(40, 100));
-
-        container.setLayout(new GridLayout(2,1));
-        topPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), ""));
-        bottomPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Syntax Tree"));
 
         JTextField textField = new JTextField("Enter your sentence here!", 40);
+
+        container.add(textField);
+        JTabbedPane tabbedPane = new JTabbedPane();
+        container.add(tabbedPane);
+
         textField.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     String sentence = textField.getText();
                     SentenceParse parseSentence = new SentenceParse(sentence);
                     TreeViewer treeViewer = parseSentence.getTreeViewer();
-
-                    //bottomPane.remove(); //make treeViewer a variable
-                    bottomPane.add(new JScrollPane(treeViewer));
-                    bottomPane.repaint();
-                    bottomPane.revalidate();
+                    JScrollPane newTree = new JScrollPane(treeViewer);
+                    tabbedPane.addTab("", newTree);
+                    tabbedPane.setSelectedComponent(newTree);
                 }
             }
         );
-
-        topPane.add(textField);
-        container.add(topPane);
-        container.add(bottomPane);
 
         frame.add(container);
         frame.pack();

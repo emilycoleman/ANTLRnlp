@@ -5,8 +5,8 @@ grammar English;
 
 WHITESPACE : (' ' | '\n')+ -> channel(HIDDEN);
 
-NOUN : ([a-z] | [A-Z])+ '_' 'NN'
-| ([a-z] | [A-Z])+ '_' 'PRP'
+NOUN : ([a-z] | [A-Z])+ '_' 'NN' //singular noun
+| ([a-z] | [A-Z])+ '_' 'PRP' //personal pronoun
 | ([a-z] | [A-Z])+ '_' 'NNS' //plural
 | ([a-z] | [A-Z])+ '_' 'NNP' //proper
 | ([a-z] | [A-Z])+ '_' 'NNPS'; //proper and plural
@@ -27,7 +27,10 @@ CONJ : ([a-z] | [A-Z])+ '_' 'CC'; //coordinating conjunction
 
 PERIOD : '.';
 
-sentence : noun_phrase verb_phrase PERIOD;
+sentence : clause PERIOD | clause CONJ clause PERIOD; //adjust to include as many independent clauses as you want
+
+clause : noun_phrase verb_phrase;
+
 noun_phrase : adjective_phrase noun_phrase
 | noun_phrase adjective_phrase
 | noun_phrase noun_phrase
