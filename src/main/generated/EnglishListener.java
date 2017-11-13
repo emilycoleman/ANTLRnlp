@@ -66,4 +66,14 @@ public interface EnglishListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVerb_phrase(EnglishParser.Verb_phraseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EnglishParser#prepositional_phrase}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrepositional_phrase(EnglishParser.Prepositional_phraseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#prepositional_phrase}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrepositional_phrase(EnglishParser.Prepositional_phraseContext ctx);
 }

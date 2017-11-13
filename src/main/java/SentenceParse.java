@@ -22,6 +22,7 @@ public class SentenceParse {
     private TreeViewer createTreeViewer(String sentence) {
         PoSTagger tagSentence = new PoSTagger(sentence);
         String taggedSentence = tagSentence.getTaggedSentence();
+        System.out.println(taggedSentence);
 
         CharStream input = CharStreams.fromString(taggedSentence);
         EnglishLexer lexer = new EnglishLexer(input);
@@ -29,7 +30,6 @@ public class SentenceParse {
         EnglishParser parser = new EnglishParser(commonTokenStream);
 
         List<String> rules = Arrays.asList(parser.getRuleNames());
-        parser.getBuildParseTree();
         ParseTree tree = parser.sentence();
 
         return new TreeViewer(rules, tree);
