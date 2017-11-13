@@ -1,4 +1,7 @@
 // Generated from English.g4 by ANTLR 4.7
+
+    package com.generated.parser;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

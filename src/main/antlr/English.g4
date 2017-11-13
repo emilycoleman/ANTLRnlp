@@ -3,6 +3,10 @@
 
 grammar English;
 
+@header {
+    package com.generated.parser;
+}
+
 WHITESPACE : (' ' | '\n')+ -> channel(HIDDEN);
 
 NOUN : WORD '_NN' //singular noun

@@ -2,7 +2,7 @@ group 'com.parser'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'antlr'
-apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 
@@ -10,31 +10,31 @@ repositories {
     mavenCentral()
 }
 
-def mainClass = '/Users/Emily/Documents/Development/antlr/EnglishParser/src/main/java/MainWindow.java'
+mainClassName =
 
-def configJavaExec = { JavaExec task ->
-    task.main = mainClass
-    task.classpath = sourceSets.main.runtimeClasspath
-    task.standardInput = System.in
-}
+//def configJavaExec = { JavaExec task ->
+//    task.main = mainClass
+//    task.classpath = sourceSets.main.runtimeClasspath
+//    task.standardInput = System.in
+//}
 
-task run(dependsOn: classes, type: JavaExec) {
-    configJavaExec(it)
-}
+//task run(dependsOn: classes, type: JavaExec) {
+//    configJavaExec(it)
+//}
 
 generateGrammarSource {
     maxHeapSize = "64m"
     arguments += ["-visitor", "-long-messages"]
-    outputDirectory = new File("src/main/generated".toString())
+    outputDirectory = file("src/main/java/com/generated/parser")
 }
 
-sourceSets {
-    generated {
-        java.srcDir 'src/main/generated'
-    }
-}
-
-compileJava.source sourceSets.generated.java, sourceSets.main.java
+//sourceSets {
+//    generated {
+//        java.srcDir 'src/main/java/com/generated/parser'
+//    }
+//}
+//
+//compileJava.source sourceSets.generated.java, sourceSets.main.java
 
 compileJava.dependsOn generateGrammarSource
 
@@ -49,5 +49,5 @@ allprojects {
 }
 
 clean{
-    delete "src/main/generated"
+    delete "src/main/java/com/generated/parser"
 }

@@ -1,3 +1,5 @@
+package app;
+
 import javax.swing.*;
 import java.awt.*;
 import org.antlr.v4.gui.TreeViewer;

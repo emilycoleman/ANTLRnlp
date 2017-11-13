@@ -1,3 +1,5 @@
+package app;
+
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 //Stanford Part of Speech Tagger: https://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/tagger/maxent/MaxentTagger.html
