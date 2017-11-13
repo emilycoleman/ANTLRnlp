@@ -45,4 +45,10 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVerb_phrase(EnglishParser.Verb_phraseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EnglishParser#prepositional_phrase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrepositional_phrase(EnglishParser.Prepositional_phraseContext ctx);
 }
