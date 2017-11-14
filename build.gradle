@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 
-mainClassName =
+mainClassName = "app.MainWindow"
 
 //def configJavaExec = { JavaExec task ->
 //    task.main = mainClass
@@ -33,7 +33,7 @@ generateGrammarSource {
 //        java.srcDir 'src/main/java/com/generated/parser'
 //    }
 //}
-//
+
 //compileJava.source sourceSets.generated.java, sourceSets.main.java
 
 compileJava.dependsOn generateGrammarSource

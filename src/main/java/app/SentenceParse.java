@@ -6,6 +6,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import com.generated.parser.EnglishLexer;
+import com.generated.parser.EnglishParser;
+
 import java.util.Arrays;
 import java.util.List;
 

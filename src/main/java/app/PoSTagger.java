@@ -11,7 +11,7 @@ public class PoSTagger {
     }
 
     private static String tagSentence(String in_sentence) {
-        MaxentTagger tagger = new MaxentTagger("../resources/StanfordPoSTagger/models/english-left3words-distsim.tagger");
+        MaxentTagger tagger = new MaxentTagger("StanfordPoSTagger/models/english-left3words-distsim.tagger");
         System.out.println(tagger.tagString(in_sentence));
         return tagger.tagString(in_sentence);
     }
