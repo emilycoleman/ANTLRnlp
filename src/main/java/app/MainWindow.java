@@ -26,12 +26,15 @@ public class MainWindow {
         textField.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
-                    String sentence = textField.getText();
-                    SentenceParse parseSentence = new SentenceParse(sentence);
-                    TreeViewer treeViewer = parseSentence.getTreeViewer();
-                    JScrollPane newTree = new JScrollPane(treeViewer);
-                    tabbedPane.addTab("", newTree);
-                    tabbedPane.setSelectedComponent(newTree);
+                    String input = textField.getText();
+                    String[] sentences = input.split("\\.");
+                    for(String sentence : sentences) {
+                        SentenceParse parseSentence = new SentenceParse(sentence);
+                        TreeViewer treeViewer = parseSentence.getTreeViewer();
+                        JScrollPane newTree = new JScrollPane(treeViewer);
+                        tabbedPane.addTab("", newTree);
+                        tabbedPane.setSelectedComponent(newTree);
+                    }
                 }
             }
         );
