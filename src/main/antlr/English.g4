@@ -42,20 +42,14 @@ CCONJ : WORD '_CC'; //coordinating conjunction
 IN : WORD '_IN';    //preposition or subordinating conjunction
 MODAL : WORD '_MD';
 
-PERIOD : '._.';
-
 fragment WORD : ([a-z] | [A-Z])+;
 
 //next thing: differentiate between a subject and a noun
 
-sentence : clause
-| clause PERIOD
-| clause CCONJ clause PERIOD //adjust to include as many independent clauses as you want
-| clause IN clause PERIOD
-;
-
-clause :
-| noun_phrase verb_phrase;
+sentence : clause (independent_clause | dependent_clause)* ;
+independent_clause : CCONJ clause;
+dependent_clause : IN clause;
+clause : noun_phrase verb_phrase;
 
 noun_phrase : adjective_phrase noun_phrase
 | DETERMINER noun_phrase
@@ -85,4 +79,5 @@ verb_phrase : VERB
 //Patterns 3, 5, 7
 | verb_phrase noun_phrase;
 
-prepositional_phrase : IN noun_phrase;
+prepositional_phrase : IN noun_phrase
+| IN ADV;   //e.g. "I'm in here."

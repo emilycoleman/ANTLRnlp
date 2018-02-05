@@ -19,6 +19,18 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSentence(EnglishParser.SentenceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EnglishParser#independent_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIndependent_clause(EnglishParser.Independent_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EnglishParser#dependent_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EnglishParser#clause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

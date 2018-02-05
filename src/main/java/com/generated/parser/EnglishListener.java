@@ -20,6 +20,26 @@ public interface EnglishListener extends ParseTreeListener {
 	 */
 	void exitSentence(EnglishParser.SentenceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EnglishParser#independent_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterIndependent_clause(EnglishParser.Independent_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#independent_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitIndependent_clause(EnglishParser.Independent_clauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EnglishParser#dependent_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterDependent_clause(EnglishParser.Dependent_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#dependent_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EnglishParser#clause}.
 	 * @param ctx the parse tree
 	 */
