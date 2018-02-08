@@ -55,15 +55,21 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAdverbial_phrase(EnglishParser.Adverbial_phraseContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EnglishParser#prepositional_phrase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrepositional_phrase(EnglishParser.Prepositional_phraseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EnglishParser#verb_phrase}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVerb_phrase(EnglishParser.Verb_phraseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EnglishParser#prepositional_phrase}.
+	 * Visit a parse tree produced by {@link EnglishParser#infinitive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrepositional_phrase(EnglishParser.Prepositional_phraseContext ctx);
+	T visitInfinitive(EnglishParser.InfinitiveContext ctx);
 }

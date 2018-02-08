@@ -1,5 +1,6 @@
 //Uses the Penn Treebank Project method of tagging
 //https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
+//Customized tags: _PREP, _SCONJ
 
 grammar English;
 
@@ -22,7 +23,6 @@ VERB : WORD '_VB'
 | WORD '_VBN'       //past participle
 | WORD '_VBP'       //1st/2nd person singular present
 | WORD '_VBZ'       //3rd person singular present
-| WORD '_TO'        //to
 | WORD '_RP';       //particle
 DETERMINER : WORD '_DT'
 | WORD '_WDT'       //wh-determiner
@@ -39,6 +39,9 @@ ADV : WORD '_RB'
 | WORD '_RBS'       //superlative
 | WORD '_WRB';      //wh-adverb
 CCONJ : WORD '_CC'; //coordinating conjunction
+SCONJ : WORD '_SCONJ';  //subordinating conjunction
+TO : WORD '_TO';    //the word "to"
+PREP : WORD '_PREP';
 IN : WORD '_IN';    //preposition or subordinating conjunction
 MODAL : WORD '_MD';
 
@@ -48,36 +51,52 @@ fragment WORD : ([a-z] | [A-Z])+;
 
 sentence : clause (independent_clause | dependent_clause)* ;
 independent_clause : CCONJ clause;
-dependent_clause : IN clause;
+dependent_clause : SCONJ clause | IN clause;
 clause : noun_phrase verb_phrase;
 
-noun_phrase : adjective_phrase noun_phrase
-| DETERMINER noun_phrase
+noun_phrase :
+  adjective_phrase noun_phrase
 | noun_phrase adjective_phrase
-| noun_phrase noun_phrase
+| DETERMINER noun_phrase
 | noun_phrase CCONJ noun_phrase
+| noun_phrase noun_phrase
 | NOUN;
 
-adjective_phrase : adjective_phrase adjective_phrase
+adjective_phrase :
+  adjective_phrase adjective_phrase
 | adverbial_phrase adjective_phrase
 | prepositional_phrase
 | ADJ;
 
-adverbial_phrase : adverbial_phrase adverbial_phrase
+adverbial_phrase :
+  adverbial_phrase adverbial_phrase
 | prepositional_phrase
 | ADV;
 
-verb_phrase : VERB
-| MODAL
-| verb_phrase VERB
+prepositional_phrase :
+  PREP noun_phrase
+| IN noun_phrase
+| TO noun_phrase
+| PREP ADV;   //e.g. "I'm in here."
+
+verb_phrase :
 //Pattern 1
-| adverbial_phrase verb_phrase
+  adverbial_phrase verb_phrase
 | verb_phrase adverbial_phrase
 | verb_phrase adjective_phrase
 //Patterns 2 and 4
 | verb_phrase adjective_phrase
 //Patterns 3, 5, 7
-| verb_phrase noun_phrase;
+| verb_phrase noun_phrase
+//Infinitives
+| infinitive
+| verb_phrase infinitive
+| infinitive verb_phrase
+//Conjunctions
+| verb_phrase CCONJ verb_phrase
+//Basic definitions
+| verb_phrase VERB
+| MODAL
+| VERB;
 
-prepositional_phrase : IN noun_phrase
-| IN ADV;   //e.g. "I'm in here."
+infinitive : TO VERB; //assuming split infinitives are grammatically incorrect
