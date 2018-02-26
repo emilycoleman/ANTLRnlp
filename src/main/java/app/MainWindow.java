@@ -31,7 +31,8 @@ public class MainWindow {
                     for(String sentence : sentences) {
                         SentenceParse parseSentence = new SentenceParse(sentence);
                         TreeViewer treeViewer = parseSentence.getTreeViewer();
-                        JScrollPane newTree = new JScrollPane(treeViewer);
+                        JScrollPane newTree = new JScrollPane();
+                        newTree.setViewportView(treeViewer);
                         tabbedPane.addTab("", newTree);
                         tabbedPane.setSelectedComponent(newTree);
                     }

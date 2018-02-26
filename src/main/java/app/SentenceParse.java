@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import com.generated.parser.EnglishLexer;
 import com.generated.parser.EnglishParser;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class SentenceParse {
 
     private TreeViewer treeViewer;
+    private int sentenceComplexityScore;
 
     public SentenceParse(String taggedSentence) {
         this.treeViewer = createTreeViewer(taggedSentence);
@@ -22,6 +24,10 @@ public class SentenceParse {
 
     public TreeViewer getTreeViewer() {
         return this.treeViewer;
+    }
+
+    public int getSentenceComplexityScore() {
+        return sentenceComplexityScore;
     }
 
     private TreeViewer createTreeViewer(String sentence) {
@@ -37,6 +43,9 @@ public class SentenceParse {
 
         List<String> rules = Arrays.asList(parser.getRuleNames());
         ParseTree tree = parser.sentence();
+        evaluateSentence(tree);
+//        System.out.println(tree.toStringTree());
+//        System.out.println(tree.toStringTree(parser));
 
         return new TreeViewer(rules, tree);
     }
@@ -76,8 +85,25 @@ public class SentenceParse {
         return containsCaseInsensitive(word, subordinatingConjunctions);
     }
 
-    public boolean containsCaseInsensitive(String word, String[] sentence){
-        return Arrays.asList(sentence).stream().anyMatch(x -> x.equalsIgnoreCase(word));
+    private boolean containsCaseInsensitive(String word, String[] sentence){
+        return Arrays.stream(sentence).anyMatch(x -> x.equalsIgnoreCase(word));
     }
 
+    private void evaluateSentence(ParseTree tree) {
+        sentenceComplexityScore = 0;
+
+        NodeListener extractor = new NodeListener();
+        ParseTreeWalker.DEFAULT.walk(extractor, tree);
+
+        sentenceComplexityScore += extractor.getIndependent_clauses();
+        sentenceComplexityScore += extractor.getDependent_clauses();
+        sentenceComplexityScore += extractor.getClauses();
+        sentenceComplexityScore += extractor.getNoun_phrases();
+        sentenceComplexityScore += extractor.getAdjective_phrases();
+        sentenceComplexityScore += extractor.getAdverbial_phrases();
+        sentenceComplexityScore += extractor.getPrepositional_phrases();
+        sentenceComplexityScore += extractor.getVerb_phrases();
+
+        System.out.println(sentenceComplexityScore);
+    }
 }
