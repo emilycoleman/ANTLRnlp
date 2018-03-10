@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import com.generated.parser.EnglishLexer;
 import com.generated.parser.EnglishParser;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.pattern.ParseTreePatternMatcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +46,7 @@ public class SentenceParse {
         ParseTree tree = parser.sentence();
         evaluateSentence(tree);
 //        System.out.println(tree.toStringTree());
-//        System.out.println(tree.toStringTree(parser));
+        System.out.println(tree.toStringTree(parser));
 
         return new TreeViewer(rules, tree);
     }
@@ -91,6 +92,12 @@ public class SentenceParse {
 
     private void evaluateSentence(ParseTree tree) {
         sentenceComplexityScore = 0;
+
+//        SyntaxPattern pattern = new SyntaxPattern("<x:ID> = <e:expr>;", parser.getATN());
+//        for (ParseTreeMatch ass : pattern.findall(tree)) {
+//            System.out.println(ass.getText()); // print entire assignment
+//            System.out.println(ass.get("x").getText()); // print id
+//        }
 
         NodeListener extractor = new NodeListener();
         ParseTreeWalker.DEFAULT.walk(extractor, tree);

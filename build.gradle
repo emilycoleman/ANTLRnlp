@@ -12,29 +12,11 @@ repositories {
 
 mainClassName = "app.MainWindow"
 
-//def configJavaExec = { JavaExec task ->
-//    task.main = mainClass
-//    task.classpath = sourceSets.main.runtimeClasspath
-//    task.standardInput = System.in
-//}
-
-//task run(dependsOn: classes, type: JavaExec) {
-//    configJavaExec(it)
-//}
-
 generateGrammarSource {
     maxHeapSize = "64m"
     arguments += ["-visitor", "-long-messages"]
     outputDirectory = file("src/main/java/com/generated/parser")
 }
-
-//sourceSets {
-//    generated {
-//        java.srcDir 'src/main/java/com/generated/parser'
-//    }
-//}
-
-//compileJava.source sourceSets.generated.java, sourceSets.main.java
 
 compileJava.dependsOn generateGrammarSource
 

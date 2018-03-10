@@ -30,6 +30,18 @@ public class EnglishBaseListener implements EnglishListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterClause(EnglishParser.ClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClause(EnglishParser.ClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIndependent_clause(EnglishParser.Independent_clauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -54,13 +66,37 @@ public class EnglishBaseListener implements EnglishListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClause(EnglishParser.ClauseContext ctx) { }
+	@Override public void enterSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClause(EnglishParser.ClauseContext ctx) { }
+	@Override public void exitSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSubject(EnglishParser.SubjectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubject(EnglishParser.SubjectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPredicate(EnglishParser.PredicateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPredicate(EnglishParser.PredicateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

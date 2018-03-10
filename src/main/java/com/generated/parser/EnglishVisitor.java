@@ -19,6 +19,12 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSentence(EnglishParser.SentenceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EnglishParser#clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClause(EnglishParser.ClauseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EnglishParser#independent_clause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -31,11 +37,23 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EnglishParser#clause}.
+	 * Visit a parse tree produced by {@link EnglishParser#subordinating_conjunction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitClause(EnglishParser.ClauseContext ctx);
+	T visitSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EnglishParser#subject}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubject(EnglishParser.SubjectContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EnglishParser#predicate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPredicate(EnglishParser.PredicateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EnglishParser#noun_phrase}.
 	 * @param ctx the parse tree

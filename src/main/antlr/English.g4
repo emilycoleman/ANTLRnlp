@@ -12,11 +12,11 @@ WHITESPACE : (' ' | '\n')+ -> channel(HIDDEN);
 
 NOUN : WORD '_NN'   //singular noun
 | WORD '_PRP'       //personal pronoun
-| WORD '_WP'        //wh-pronoun
-| WORD '_WP$'       //possessive wh-pronoun
 | WORD '_NNS'       //plural
 | WORD '_NNP'       //proper
 | WORD '_NNPS';     //proper and plural
+WH_NOUN : WORD '_WP'//wh-pronoun
+| WORD '_WP$';      //possessive wh-pronoun
 VERB : WORD '_VB'
 | WORD '_VBD'       //past tense
 | WORD '_VBG'       //gerund or present participle
@@ -25,9 +25,9 @@ VERB : WORD '_VB'
 | WORD '_VBZ'       //3rd person singular present
 | WORD '_RP';       //particle
 DETERMINER : WORD '_DT'
-| WORD '_WDT'       //wh-determiner
 | WORD '_PRP$'      //possessive pronoun
 | WORD '_PDT';      //predeterminer
+WH_DET : WORD '_WDT';//wh-determiner**
 ADJ : WORD '_JJ'
 | WORD '_JJR'
 | WORD '_JJS'
@@ -36,23 +36,35 @@ ADJ : WORD '_JJ'
 | WORD '_EX';       //existential there
 ADV : WORD '_RB'
 | WORD '_RBR'       //comparative
-| WORD '_RBS'       //superlative
-| WORD '_WRB';      //wh-adverb
+| WORD '_RBS';      //superlative
+WH_ADV : WORD '_WRB';//wh-adverb**
 CCONJ : WORD '_CC'; //coordinating conjunction
-SCONJ : WORD '_SCONJ';  //subordinating conjunction
+SCONJ : WORD '_SCONJ';//subordinating conjunction
 TO : WORD '_TO';    //the word "to"
 PREP : WORD '_PREP';
 IN : WORD '_IN';    //preposition or subordinating conjunction
 MODAL : WORD '_MD';
+INTERJECTION : WORD '_UH'; //Interjection
 
 fragment WORD : ([a-z] | [A-Z])+;
 
-//next thing: differentiate between a subject and a noun
+sentence : (INTERJECTION)* independent_clause (CCONJ independent_clause | dependent_clause)* ;
+clause : subject predicate;
+independent_clause : clause;
 
-sentence : clause (independent_clause | dependent_clause)* ;
-independent_clause : CCONJ clause;
-dependent_clause : SCONJ clause | IN clause;
-clause : noun_phrase verb_phrase;
+dependent_clause :
+  subordinating_conjunction clause
+| subordinating_conjunction predicate;
+
+subordinating_conjunction :
+  SCONJ
+| IN
+| WH_NOUN
+| WH_ADV
+| WH_DET;
+
+subject: noun_phrase;
+predicate: verb_phrase;
 
 noun_phrase :
   adjective_phrase noun_phrase
@@ -66,6 +78,7 @@ adjective_phrase :
   adjective_phrase adjective_phrase
 | adverbial_phrase adjective_phrase
 | prepositional_phrase
+| dependent_clause
 | ADJ;
 
 adverbial_phrase :

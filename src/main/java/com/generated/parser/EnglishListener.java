@@ -20,6 +20,16 @@ public interface EnglishListener extends ParseTreeListener {
 	 */
 	void exitSentence(EnglishParser.SentenceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EnglishParser#clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterClause(EnglishParser.ClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitClause(EnglishParser.ClauseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EnglishParser#independent_clause}.
 	 * @param ctx the parse tree
 	 */
@@ -40,15 +50,35 @@ public interface EnglishListener extends ParseTreeListener {
 	 */
 	void exitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link EnglishParser#clause}.
+	 * Enter a parse tree produced by {@link EnglishParser#subordinating_conjunction}.
 	 * @param ctx the parse tree
 	 */
-	void enterClause(EnglishParser.ClauseContext ctx);
+	void enterSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link EnglishParser#clause}.
+	 * Exit a parse tree produced by {@link EnglishParser#subordinating_conjunction}.
 	 * @param ctx the parse tree
 	 */
-	void exitClause(EnglishParser.ClauseContext ctx);
+	void exitSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EnglishParser#subject}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubject(EnglishParser.SubjectContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#subject}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubject(EnglishParser.SubjectContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EnglishParser#predicate}.
+	 * @param ctx the parse tree
+	 */
+	void enterPredicate(EnglishParser.PredicateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#predicate}.
+	 * @param ctx the parse tree
+	 */
+	void exitPredicate(EnglishParser.PredicateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link EnglishParser#noun_phrase}.
 	 * @param ctx the parse tree
