@@ -37,6 +37,12 @@ public interface EnglishVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EnglishParser#interjection}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterjection(EnglishParser.InterjectionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EnglishParser#subordinating_conjunction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

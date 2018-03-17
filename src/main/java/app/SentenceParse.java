@@ -6,10 +6,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import com.generated.parser.EnglishLexer;
 import com.generated.parser.EnglishParser;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.runtime.tree.pattern.ParseTreePatternMatcher;
+import com.generated.parser.EnglishLexer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +15,13 @@ import java.util.List;
 public class SentenceParse {
 
     private TreeViewer treeViewer;
-    private int sentenceComplexityScore;
+    private int sentenceReadabilityScore;
+
+//  TODO: Refactor into separate objects: ParsedSentence, ReadabilityScore
+//    private ParseTree tree;
+//    private EnglishParser parser;
+    private String sentence;
+//    private String taggedSentence;
 
     public SentenceParse(String taggedSentence) {
         this.treeViewer = createTreeViewer(taggedSentence);
@@ -27,11 +31,12 @@ public class SentenceParse {
         return this.treeViewer;
     }
 
-    public int getSentenceComplexityScore() {
-        return sentenceComplexityScore;
+    public int getSentenceReadabilityScore() {
+        return sentenceReadabilityScore;
     }
 
     private TreeViewer createTreeViewer(String sentence) {
+        this.sentence = sentence;
         PoSTagger tagSentence = new PoSTagger(sentence);
         String taggedSentence = tagSentence.getTaggedSentence();
         taggedSentence = preprocessor(taggedSentence);
@@ -44,9 +49,8 @@ public class SentenceParse {
 
         List<String> rules = Arrays.asList(parser.getRuleNames());
         ParseTree tree = parser.sentence();
-        evaluateSentence(tree);
-//        System.out.println(tree.toStringTree());
-        System.out.println(tree.toStringTree(parser));
+
+        ReadabilityScore readabilityScore = new ReadabilityScore(tree, parser);
 
         return new TreeViewer(rules, tree);
     }
@@ -88,29 +92,5 @@ public class SentenceParse {
 
     private boolean containsCaseInsensitive(String word, String[] sentence){
         return Arrays.stream(sentence).anyMatch(x -> x.equalsIgnoreCase(word));
-    }
-
-    private void evaluateSentence(ParseTree tree) {
-        sentenceComplexityScore = 0;
-
-//        SyntaxPattern pattern = new SyntaxPattern("<x:ID> = <e:expr>;", parser.getATN());
-//        for (ParseTreeMatch ass : pattern.findall(tree)) {
-//            System.out.println(ass.getText()); // print entire assignment
-//            System.out.println(ass.get("x").getText()); // print id
-//        }
-
-        NodeListener extractor = new NodeListener();
-        ParseTreeWalker.DEFAULT.walk(extractor, tree);
-
-        sentenceComplexityScore += extractor.getIndependent_clauses();
-        sentenceComplexityScore += extractor.getDependent_clauses();
-        sentenceComplexityScore += extractor.getClauses();
-        sentenceComplexityScore += extractor.getNoun_phrases();
-        sentenceComplexityScore += extractor.getAdjective_phrases();
-        sentenceComplexityScore += extractor.getAdverbial_phrases();
-        sentenceComplexityScore += extractor.getPrepositional_phrases();
-        sentenceComplexityScore += extractor.getVerb_phrases();
-
-        System.out.println(sentenceComplexityScore);
     }
 }

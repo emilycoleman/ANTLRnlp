@@ -8,7 +8,7 @@ grammar English;
     package com.generated.parser;
 }
 
-WHITESPACE : (' ' | '\n')+ -> channel(HIDDEN);
+WHITESPACE : (' ' | '\n' | ',')+ -> channel(HIDDEN);
 
 NOUN : WORD '_NN'   //singular noun
 | WORD '_PRP'       //personal pronoun
@@ -22,8 +22,8 @@ VERB : WORD '_VB'
 | WORD '_VBG'       //gerund or present participle
 | WORD '_VBN'       //past participle
 | WORD '_VBP'       //1st/2nd person singular present
-| WORD '_VBZ'       //3rd person singular present
-| WORD '_RP';       //particle
+| WORD '_VBZ';       //3rd person singular present
+PARTICLE: WORD '_RP'; //particle
 DETERMINER : WORD '_DT'
 | WORD '_PRP$'      //possessive pronoun
 | WORD '_PDT';      //predeterminer
@@ -48,13 +48,17 @@ INTERJECTION : WORD '_UH'; //Interjection
 
 fragment WORD : ([a-z] | [A-Z])+;
 
-sentence : (INTERJECTION)* independent_clause (CCONJ independent_clause | dependent_clause)* ;
+sentence : (interjection)* independent_clause (CCONJ independent_clause | dependent_clause)* ;
+
 clause : subject predicate;
 independent_clause : clause;
 
 dependent_clause :
   subordinating_conjunction clause
-| subordinating_conjunction predicate;
+| subordinating_conjunction predicate
+| subordinating_conjunction dependent_clause;
+
+interjection : INTERJECTION;
 
 subordinating_conjunction :
   SCONJ
@@ -109,7 +113,8 @@ verb_phrase :
 | verb_phrase CCONJ verb_phrase
 //Basic definitions
 | verb_phrase VERB
-| MODAL
+| MODAL verb_phrase
+| VERB PARTICLE
 | VERB;
 
 infinitive : TO VERB; //assuming split infinitives are grammatically incorrect

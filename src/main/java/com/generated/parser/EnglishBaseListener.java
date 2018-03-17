@@ -66,6 +66,18 @@ public class EnglishBaseListener implements EnglishListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterInterjection(EnglishParser.InterjectionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterjection(EnglishParser.InterjectionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSubordinating_conjunction(EnglishParser.Subordinating_conjunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}

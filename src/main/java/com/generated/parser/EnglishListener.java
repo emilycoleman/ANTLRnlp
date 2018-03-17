@@ -50,6 +50,16 @@ public interface EnglishListener extends ParseTreeListener {
 	 */
 	void exitDependent_clause(EnglishParser.Dependent_clauseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EnglishParser#interjection}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterjection(EnglishParser.InterjectionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnglishParser#interjection}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterjection(EnglishParser.InterjectionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EnglishParser#subordinating_conjunction}.
 	 * @param ctx the parse tree
 	 */
