@@ -51,6 +51,7 @@ public class SentenceParse {
         ParseTree tree = parser.sentence();
 
         ReadabilityScore readabilityScore = new ReadabilityScore(tree, parser);
+        System.out.println("Custom readability score: " + readabilityScore.getReadingScore());
 
         return new TreeViewer(rules, tree);
     }

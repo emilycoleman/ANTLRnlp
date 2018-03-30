@@ -6,11 +6,7 @@ import org.antlr.v4.runtime.tree.Tree;
 import org.antlr.v4.runtime.tree.Trees;
 import org.antlr.v4.runtime.tree.xpath.XPath;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import edu.stanford.nlp.trees.EnglishGrammaticalRelations;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.lang.StringBuffer;
 
 public class ReadabilityScore {
     private double readingScore = 0;
@@ -20,21 +16,35 @@ public class ReadabilityScore {
         //Break sentence up into a list of independent clauses
         String xpath = "/sentence/independent_clause";
         ArrayList<ParseTree> independentClauses = new ArrayList<>(XPath.findAll(tree, xpath, parser));
+        ArrayList<Double> independentClauseScores = new ArrayList<>();
+        ArrayList<Double> fleschScores = new ArrayList<>();
 
         //For each independent clause
         for(ParseTree independentClause : independentClauses) {
+
             //get subtree's independent clause
             String subtreeClause = getSubtreeSentence(independentClause);
-            subtreeClause = cleanSentenceOfTags(subtreeClause);
-            System.out.println("clean subtree: " + subtreeClause);
+            String[] cleanSubtree = cleanSentenceOfTags(subtreeClause);
 
             //get its baseline score
-            FleschReadingEase fleschReadingEase = new FleschReadingEase(getSubtreeSentence(independentClause));
-            double fleschScore = fleschReadingEase.getReadabilityEaseScore();
+            FleschReadingEase fleschReadingEase = new FleschReadingEase(cleanSubtree);
+            fleschScores.add(fleschReadingEase.getReadabilityEaseScore());
 
             //alter that score based on its structure
-            readingScore = fleschScore + refineSentenceScore(fleschScore, independentClause, parser);
+            independentClauseScores.add(adjustScore(independentClause, parser));
         }
+
+        //take the average of the independent clause's scores
+        double independentClauseScoresAverage = getAverage(independentClauseScores);
+        double fleschScoresAverage = getAverage(fleschScores);
+
+        //if the sentence has more than one independent clause, deduct points for each additional clause
+        double readabilityScorePentalty = independentClauseScoresAverage;
+        if(independentClauses.size() > 1) {
+            readabilityScorePentalty -= independentClauses.size() - 1;
+        }
+
+        readingScore = fleschScoresAverage - readabilityScorePentalty;
     }
 
     public double getReadingScore() {
@@ -46,55 +56,31 @@ public class ReadabilityScore {
         ParseTreeWalker.DEFAULT.walk(extractor, subtree);
 
         String sentence = extractor.terminalWords;
-        System.out.println("subtree sentence: " + sentence);
 
         return sentence;
     }
 
-    private String cleanSentenceOfTags(String sentence) {
-        StringBuffer cleanSentence = new StringBuffer();
+    private String[] cleanSentenceOfTags(String sentence) {
+        ArrayList<String> cleanString = new ArrayList<>();
         String[] splitSentence = sentence.split(" ");
 
         for(String word : splitSentence) {
-            cleanSentence.append(" " + word.split("_[a-zA-Z]*")[0]);
+            if(word.length() > 0) {
+                cleanString.add(word);
+            }
         }
 
-        return cleanSentence.toString();
+        String[] returnArray = new String[cleanString.size()];
+        return cleanString.toArray(returnArray);
     }
-
-    private double refineSentenceScore(double score, ParseTree t, EnglishParser parser) {
-        //Penalty chart:
-        //# dependent clauses       * -3
-        //sum of dep clause depth   * -2
-        //# adverbs                 * -1
-        //passive voice               -5
-        //immediate subject + verb    +5
-
-        //Penalize dependent clauses
-        score -= calculateDependentClausePenalties(t, parser);
-
-        //Active or passive voice (?)
-
-        //FROM JALEN'S NOTES:
-
-        //Penalize for adverbs
-        //Add one point for each adverb
-        int advCount = 0;
-        String advPath = "//ADV";
-        for(ParseTree adv : XPath.findAll(t, advPath, parser)) {
-            advCount++;
-        }
-        score -= advCount;
-
-        //Keep a subject and its verb physically close together
-
-        return score;
-    }
-
-    //recursively find each nested dependent clause
 
     //count how many layers deep you've gone to appropriately penalize
-    private int calculateDependentClausePenalties(ParseTree tree, EnglishParser parser) {
+    private double adjustScore(ParseTree tree, EnglishParser parser) {
+        //Penalty chart:
+        //# independent clauses > 1 * -1
+        //# dependent clauses       * -3
+        //sum of dep clause depth   * -2
+
         //for each dependent clause
         String dependentClausePaths = "//dependent_clause";
         ArrayList<ParseTree> dependentClauses = new ArrayList<>(XPath.findAll(tree, dependentClausePaths, parser));
@@ -114,10 +100,16 @@ public class ReadabilityScore {
 
          //return (# of dependent clauses * 3) + (sum of dep clause depth * 2)
         int dependentClauseCount = dependentClauses.size();
-        return ((dependentClauseCount * 3) + (depthSum * 2));
+        int finalSize = (dependentClauseCount * 3) + (depthSum * 2);
+        return finalSize;
     }
 
-    private void findRecursiveAncestors(ParseTree tree) {
+    double getAverage(ArrayList<Double> numbers) {
+        double total = 0;
+        for(double number : numbers) {
+            total += number;
+        }
 
+        return total/numbers.size();
     }
 }

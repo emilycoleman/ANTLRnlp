@@ -5,7 +5,7 @@ import eu.crydee.syllablecounter.SyllableCounter;
 public class FleschReadingEase {
     private double readabilityEaseScore;
 
-    FleschReadingEase(String sentence) {
+    FleschReadingEase(String[] sentence) {
         calculateReadabilityEaseScore(sentence);
     }
 
@@ -13,21 +13,19 @@ public class FleschReadingEase {
         return readabilityEaseScore;
     }
 
-    private void calculateReadabilityEaseScore(String sentence) {
-        int sentenceLength = sentence.split(" ").length;
-        int syllableCount = countSyllables(sentence);
-        double averageSyllablesPerWord = syllableCount/sentenceLength;
+    private void calculateReadabilityEaseScore(String[] sentence) {
+        double syllableCount = countSyllables(sentence);
+        double averageSyllablesPerWord = syllableCount/sentence.length;
 
-        readabilityEaseScore = 206.835 - (1.015 * sentenceLength) - (84.6 * averageSyllablesPerWord);
+        readabilityEaseScore = 206.835 - (1.015 * sentence.length) - (84.6 * averageSyllablesPerWord);
 
     }
 
-    private int countSyllables(String sentence) {
+    private int countSyllables(String[] sentence) {
         SyllableCounter sc = new SyllableCounter();
         int syllableCount = 0;
 
-        String[] words = sentence.split(" ");
-        for (String word : words) {
+        for (String word : sentence) {
             syllableCount += sc.count(word);
         }
 
