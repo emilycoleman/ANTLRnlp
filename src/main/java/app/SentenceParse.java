@@ -15,13 +15,12 @@ import java.util.List;
 public class SentenceParse {
 
     private TreeViewer treeViewer;
-    private int sentenceReadabilityScore;
+    private double sentenceReadabilityScore;
+    private double fleschScore;
 
 //  TODO: Refactor into separate objects: ParsedSentence, ReadabilityScore
-//    private ParseTree tree;
-//    private EnglishParser parser;
+
     private String sentence;
-//    private String taggedSentence;
 
     public SentenceParse(String taggedSentence) {
         this.treeViewer = createTreeViewer(taggedSentence);
@@ -31,8 +30,16 @@ public class SentenceParse {
         return this.treeViewer;
     }
 
-    public int getSentenceReadabilityScore() {
+    public double getAdjustedScore() {
         return sentenceReadabilityScore;
+    }
+
+    public double getFleschScore() {
+        return fleschScore;
+    }
+
+    public String getSentence() {
+        return this.sentence;
     }
 
     private TreeViewer createTreeViewer(String sentence) {
@@ -40,7 +47,6 @@ public class SentenceParse {
         PoSTagger tagSentence = new PoSTagger(sentence);
         String taggedSentence = tagSentence.getTaggedSentence();
         taggedSentence = preprocessor(taggedSentence);
-        System.out.println(taggedSentence);
 
         CharStream input = CharStreams.fromString(taggedSentence);
         EnglishLexer lexer = new EnglishLexer(input);
@@ -51,7 +57,8 @@ public class SentenceParse {
         ParseTree tree = parser.sentence();
 
         ReadabilityScore readabilityScore = new ReadabilityScore(tree, parser);
-        System.out.println("Custom readability score: " + readabilityScore.getReadingScore());
+        sentenceReadabilityScore = readabilityScore.getReadingScore();
+        fleschScore = readabilityScore.getUnadjustedFleschScore();
 
         return new TreeViewer(rules, tree);
     }

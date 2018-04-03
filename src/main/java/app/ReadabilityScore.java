@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 public class ReadabilityScore {
     private double readingScore = 0;
+    private double unadjustedFleschScore = 0;
 
     public ReadabilityScore(ParseTree tree, EnglishParser parser) {
+        unadjustedFleschScore = getRawFleschScore(tree);
 
         //Break sentence up into a list of independent clauses
         String xpath = "/sentence/independent_clause";
@@ -51,6 +53,17 @@ public class ReadabilityScore {
         return readingScore;
     }
 
+    public double getUnadjustedFleschScore() { return unadjustedFleschScore; }
+
+    private double getRawFleschScore(ParseTree sentence) {
+        String taggedSentence = getSubtreeSentence(sentence);
+        String[] cleanSentence = cleanSentenceOfTags(taggedSentence);
+
+        //get its baseline score
+        FleschReadingEase rawFlesch = new FleschReadingEase(cleanSentence);
+        return rawFlesch.getReadabilityEaseScore();
+    }
+
     private String getSubtreeSentence(ParseTree subtree) {
         NodeListener extractor = new NodeListener();
         ParseTreeWalker.DEFAULT.walk(extractor, subtree);
@@ -66,7 +79,7 @@ public class ReadabilityScore {
 
         for(String word : splitSentence) {
             if(word.length() > 0) {
-                cleanString.add(word);
+                cleanString.add(word.split("_[a-zA-Z]*")[0]);
             }
         }
 
@@ -77,31 +90,38 @@ public class ReadabilityScore {
     //count how many layers deep you've gone to appropriately penalize
     private double adjustScore(ParseTree tree, EnglishParser parser) {
         //Penalty chart:
-        //# independent clauses > 1 * -1
-        //# dependent clauses       * -3
-        //sum of dep clause depth   * -2
+        //# independent clauses > 1 * 1
+        //# dependent clauses       * 5
+        //sum of factorial of each depth
 
         //for each dependent clause
         String dependentClausePaths = "//dependent_clause";
         ArrayList<ParseTree> dependentClauses = new ArrayList<>(XPath.findAll(tree, dependentClausePaths, parser));
+        ArrayList<Integer> depths = new ArrayList<>();
+        int depthPenalty = 0;
 
-        int depthSum = 0;
+//        int depthSum = 0;
         for(ParseTree clause : dependentClauses) {
-            //int depth = 0;
+            int depth = 0;
             for(Tree t : Trees.getAncestors(clause)) {
                 String ancestorNode = Trees.getNodeText(t, parser);
                 if(ancestorNode.equals("dependent_clause")) {
-                    depthSum++;
-                    //depth++;
+//                    depthSum++;
+                    depth++;
                 }
             }
             //System.out.println(depth);
+            depths.add(depth);
         }
 
          //return (# of dependent clauses * 3) + (sum of dep clause depth * 2)
         int dependentClauseCount = dependentClauses.size();
-        int finalSize = (dependentClauseCount * 3) + (depthSum * 2);
-        return finalSize;
+        for(int depth : depths) {
+            depthPenalty += factorial(depth + 1);
+        }
+
+        //final dependent clause penalty
+        return (dependentClauseCount * 4) + depthPenalty;
     }
 
     double getAverage(ArrayList<Double> numbers) {
@@ -111,5 +131,15 @@ public class ReadabilityScore {
         }
 
         return total/numbers.size();
+    }
+
+    int factorial(int n) {
+        int retval = 1;
+
+        while(n > 1) {
+            retval = retval * n--;
+        }
+
+        return retval;
     }
 }
